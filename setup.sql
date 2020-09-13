@@ -1,4 +1,5 @@
 --Setup file
+DROP DATABASE IF EXISTS coffee_db;
 CREATE DATABASE IF NOT EXISTS coffee_db;
 USE coffee_db;
 
@@ -9,28 +10,40 @@ CREATE TABLE IF NOT EXISTS users(
 	LastName varchar(255) NOT NULL,
 	FirstName varchar(255) NOT NULL,
 	Password varchar(255) NOT NULL,
-	Age int,
+	Birthday date,
 	Email varchar(255) NOT NULL,
+	Status ENUM("Admin", "User") NOT NULL DEFAULT "User",
 	UNIQUE (id, Username)
 );
 
+INSERT INTO users(Username, LastName, FirstName, Password, Email, Status)
+	values("admin", "Ministrator", "Ad", "admin", "admin", "Admin");
 
-CREATE TABLE IF NOT EXISTS potential_credentials(
+--lists the moderators for each category
+CREATE TABLE IF NOT EXISTS categories_moderators(
+	userID int NOT NULL,
+	categoryID int NOT NULL,
+	PRIMARY KEY(userID, categoryID)
+
+);
+CREATE TABLE IF NOT EXISTS credential_master_list(
 	id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	name varchar(255) NOT NULL
 );
 --connection between potential credentials and the categories they can be used in
-CREATE TABLE IF NOT EXISTS potential_credential_categories(
-	potential_credentials_id int NOT NULL,
+CREATE TABLE IF NOT EXISTS credential_category_connection(
+	credentials_id int NOT NULL,
 	categoryID int NOT NULL,
-	PRIMARY KEY(potential_credentials_id, categoryID)
+	PRIMARY KEY(credentials_id, categoryID)
 );
 
 --connection of credentials to users
-CREATE TABLE IF NOT EXISTS actual_user_credentials(
-	userID int,
-	potential_credentials int,
-	PRIMARY KEY(userID, potential_credentials)
+CREATE TABLE IF NOT EXISTS user_credentials(
+	userID int NOT NULL,
+	credential_id int NOT NULL,
+	evidence_file_dir text,
+	status ENUM("PENDING", "APPROVED") DEFAULT "PENDING",
+	PRIMARY KEY(userID, credential_id)
 );
 
 --FORUM-RELATED
@@ -46,9 +59,43 @@ CREATE TABLE IF NOT EXISTS topics(
 	id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	name varchar(255) NOT NULL,
 	categoryID int NOT NULL,
-	parentTopicID int NOT NULL 
+	parentTopicID int
 		/*
 		* self-referential id that shows the topic above. 
-		* This should be set to 0 if it is a top-level topic
+		* This should be set to NULL if it is a top-level topic
 		*/
-)
+);
+
+CREATE TABLE IF NOT EXISTS posts(
+	id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	title varchar(255) NOT NULL,
+	datetimePosted timestamp DEFAULT CURRENT_TIMESTAMP(), 
+	description text NOT NULL,
+	upvotes int NOT NULL DEFAULT 0,
+	downvotes int NOT NULL DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS responses(
+	id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	content text NOT NULL,
+	upvotes int NOT NULL DEFAULT 0,
+	downvotes int NOT NULL DEFAULT 0,
+	postID int NOT NULL,
+	parentResponseID int
+	/*
+	* self-referential id that shows the topic above. 
+	* This should be set to NULL if it is a top-level topic
+	*/
+);
+
+CREATE TABLE IF NOT EXISTS vote_master_list(
+	voterUserID int NOT NULL,
+	postID int NOT NULL,
+	responseID int
+	/* should be nulled out if it is an upvote for the post */
+);
+CREATE TABLE IF NOT EXISTS answer_requests(
+	requestorUserID int NOT NULL,
+	requestedUserID int NOT NULL,
+	postID int NOT NULL
+); 
