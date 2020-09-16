@@ -16,8 +16,15 @@ CREATE TABLE IF NOT EXISTS users(
 	UNIQUE (id, Username)
 );
 
+CREATE TABLE IF NOT EXISTS sessions(
+	id int NOT NULL PRIMARY KEY,
+	userID int NOT NULL
+);
+
 INSERT INTO users(Username, LastName, FirstName, Password, Email, Status)
 	values("admin", "Ministrator", "Ad", "admin", "admin", "Admin");
+INSERT INTO users(Username, LastName, FirstName, Password, Email, Status)
+	values("EmilioJuan24", "Lopez", "Emil John", "Jivs080299.", "emil_lopez@dlsu.edu.ph", "User");
 
 --lists the moderators for each category
 CREATE TABLE IF NOT EXISTS categories_moderators(
@@ -51,8 +58,13 @@ CREATE TABLE IF NOT EXISTS user_credentials(
 CREATE TABLE IF NOT EXISTS categories(
 	id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	name varchar(255) NOT NULL,
+	description text NOT NULL,
 	creatorID int NOT NULL /*primary key of user who created the category*/
 );
+--preset categories
+INSERT into categories(name, description, creatorID)
+	values("Philippine History", "The history of the Philippines", 0),
+		  ("Agribusiness", "All about businesses in the agricultural space", 0);
 
 
 CREATE TABLE IF NOT EXISTS topics(
