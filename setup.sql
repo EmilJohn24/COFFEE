@@ -37,22 +37,27 @@ CREATE TABLE IF NOT EXISTS credential_master_list(
 	id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	name varchar(255) NOT NULL
 );
+
+INSERT into credential_master_list(name) value("Historian"); --id=1
 --connection between potential credentials and the categories they can be used in
 CREATE TABLE IF NOT EXISTS credential_category_connection(
-	credentials_id int NOT NULL,
+	credentialID int NOT NULL,
 	categoryID int NOT NULL,
-	PRIMARY KEY(credentials_id, categoryID)
+	PRIMARY KEY(credentialID, categoryID)
 );
+
+INSERT into credential_category_connection(credentialID, categoryID) values(1, 1); --Historian -> Philippine History
 
 --connection of credentials to users
 CREATE TABLE IF NOT EXISTS user_credentials(
 	userID int NOT NULL,
-	credential_id int NOT NULL,
+	credentialID int NOT NULL,
 	evidence_file_dir text,
 	status ENUM("PENDING", "APPROVED") DEFAULT "PENDING",
-	PRIMARY KEY(userID, credential_id)
+	PRIMARY KEY(userID, credentialID)
 );
 
+INSERT into user_credentials(userID, credentialID, status) values(1, 1, "APPROVED");
 --FORUM-RELATED
 --List of all possible credentials in the site 
 CREATE TABLE IF NOT EXISTS categories(
@@ -63,46 +68,54 @@ CREATE TABLE IF NOT EXISTS categories(
 );
 --preset categories
 INSERT into categories(name, description, creatorID)
-	values("Philippine History", "The history of the Philippines", 0),
-		  ("Agribusiness", "All about businesses in the agricultural space", 0);
+	values("Philippine History", "The history of the Philippines", 1),
+		  ("Agribusiness", "All about businesses in the agricultural space", 1);
 
 
 CREATE TABLE IF NOT EXISTS topics(
 	id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	name varchar(255) NOT NULL,
-	categoryID int NOT NULL,
-	parentTopicID int
-		/*
-		* self-referential id that shows the topic above. 
-		* This should be set to NULL if it is a top-level topic
-		*/
+	description text NOT NULL,
+	categoryID int NOT NULL
 );
+
+INSERT INTO topics(name, description, categoryID)
+	values ("Martial Law Era", "The state of the Philippines during the rule of Ferdinand Marcos", 1),
+			("Organic Farming", "All about how to make a successful business in organic farming", 2);
 
 CREATE TABLE IF NOT EXISTS posts(
 	id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	title varchar(255) NOT NULL,
 	datetimePosted timestamp DEFAULT CURRENT_TIMESTAMP(), 
-	description text NOT NULL,
-	upvotes int NOT NULL DEFAULT 0,
-	downvotes int NOT NULL DEFAULT 0
+	topicID int NOT NULL,
+	userID int NOT NULL,
+	content text NOT NULL
 );
 
+INSERT INTO posts(title, topicID, userID, content)
+	values("Who is Marcos", 1, 2, "I don't know who this Marcos guy is?");
 CREATE TABLE IF NOT EXISTS responses(
 	id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	content text NOT NULL,
+	datetimePosted timestamp DEFAULT CURRENT_TIMESTAMP(),
 	upvotes int NOT NULL DEFAULT 0,
 	downvotes int NOT NULL DEFAULT 0,
 	postID int NOT NULL,
+	userID int NOT NULL,
 	parentResponseID int
 	/*
 	* self-referential id that shows the topic above. 
 	* This should be set to NULL if it is a top-level topic
 	*/
 );
+INSERT INTO responses(content, postID, userID)
+			values("He was a dictator who used a communism uprising as an excuse to declare Martial Law<br/><br/>Yikes.", 1 ,1),
+				   ("I see. I am actually a historian but I didn't know, how shameful.", 1, 2);
 
 CREATE TABLE IF NOT EXISTS vote_master_list(
 	voterUserID int NOT NULL,
 	postID int NOT NULL,
+	vote ENUM("UP", "DOWN") NOT NULL,
 	responseID int
 	/* should be nulled out if it is an upvote for the post */
 );
