@@ -13,6 +13,7 @@
 	</head>
 	<body>
 		<div id="posts" class="posts w3-panel">
+			<a href="./new_post.php?id=<?php echo $id;?>">New Post</a>
 			<table id="posts" class="forum_table w3-table w3-bordered">
 			    <colgroup>
 				   <col span="1" style="width: 20%;">

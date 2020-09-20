@@ -15,7 +15,7 @@
 				$current_user_id = $current_user_info["id"];
 				$new_response_content = html_reformat($_POST["newResponse"]);
 				$post_insert_query = do_query("INSERT into responses(content, postID, userID)
-											values ('$new_response_content', $id, $user_id);
+											values ('$new_response_content', $id, $current_user_id);
 											");
 			}
 			else die("You must be logged in to post.");
@@ -46,7 +46,7 @@
 		?>
 		
 		
-		<form class="w3-container" id="newPost" action="<?php echo cleanse($_SERVER['PHP_SELF']); ?>?id=<?php echo $id;?>" method="POST">
+		<form class="w3-container" id="newResponse" action="<?php echo cleanse($_SERVER['PHP_SELF']); ?>?id=<?php echo $id;?>" method="POST">
 			<textarea name="newResponse" class="w3-input w3-border" rows="10" cols="10" placeholder="New Post"></textarea>
 			<input type="submit" text="Post" name="post" />
 		</form>

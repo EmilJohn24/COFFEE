@@ -3,6 +3,7 @@ define("DB_HOST", "localhost");
 define("DB_USERNAME", "root");
 define("DB_PWD", "");
 define("DB_NAME", "coffee_db");
+define("EVIDENCE_DIR", "credential_evidence/");
 //SQL setup
 $rec_sql_conn = mysqli_connect(DB_HOST, DB_USERNAME, DB_PWD);
 if (!$rec_sql_conn) die();
@@ -44,7 +45,8 @@ function get_session_user($session_id){
 	$session_user_query_str = "SELECT *
 							FROM sessions
 							JOIN users
-							ON sessions.userID = users.id";
+							ON sessions.userID = users.id
+							WHERE sessions.id=$session_id;";
 	$session_user = mysqli_query(get_sql_conn(), $session_user_query_str);
 	return mysqli_fetch_assoc($session_user);
 }
@@ -74,6 +76,27 @@ function query_user_credentials_in($user_id, $category_id){
 						WHERE ccc.categoryID=$category_id AND uc.status='APPROVED' AND uc.userID=$user_id;";
 	return do_query($expertise_query);
 }
+
+function query_user_credentials($user_id, $category_id){
+	$expertise_query = "SELECT cml.name, uc.evidence_file_dir , uc.status
+						FROM user_credentials uc
+						JOIN credential_category_connection ccc
+						ON uc.credentialID = ccc.credentialID
+						JOIN credential_master_list cml
+						ON cml.id = uc.credentialID
+						WHERE ccc.categoryID=$category_id AND uc.userID=$user_id;";
+	return do_query($expertise_query);
+}
+
+function query_credential_ids_from($category_id){
+	$expertise_query = "SELECT cml.id, cml.name
+					FROM credential_master_list cml
+					JOIN credential_category_connection ccc
+					ON cml.id = ccc.credentialID	
+					WHERE ccc.categoryID=$category_id;";
+	return do_query($expertise_query);
+}
+
 
 function get_post_category_id($post_id){
 	$query = "SELECT categoryID
@@ -111,5 +134,25 @@ function query_posts($topicID){
 
 function empty_query($query_result){
 	return mysqli_num_rows($query_result) == 0;
+}
+
+function get_vote_count($post_id, $response_id, $voteType){
+	$vote_query = do_query("SELECT COUNT(*) AS 'count' 
+							FROM vote_master_list 
+							WHERE vote='$voteType' AND postID=$post_id AND responseID=$response_id");
+	return mysqli_fetch_assoc($vote_query)["count"];
+}
+
+function get_vote_by($user_id, $post_id, $response_id){
+	$vote_query = do_query("SELECT vote
+							FROM vote_master_list
+							WHERE postID=$post_id AND responseID=$response_id 
+							AND voterUserID=$user_id;");
+	if (empty_query($vote_query)) return "NONE";
+	else{
+		$vote_str = mysqli_fetch_assoc($vote_query)["vote"];
+		return $vote_str;
+	}						
+				
 }
 ?>
