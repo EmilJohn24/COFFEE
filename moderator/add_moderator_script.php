@@ -8,7 +8,7 @@
 	
 	if (!is_moderator_in($current_user_id, $category_id))die("Restricted access: You are not a moderator");
 	else{
-		$insertion_query = do_query("INSERT into categories_moderators(userID, categoryID)
+		$insertion_query = do_query("INSERT into coffee_user_db.categories_moderators(userID, categoryID)
 									VALUES($user_id, $category_id)");
 		header("Location: add_moderator.php?categoryID=$category_id");
 	}

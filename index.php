@@ -25,7 +25,7 @@
 						echo "<td><a href='./category.php?id=$categoryID'>" . $category["name"] . "</a></td>";						
 						echo "<td>" . $category["description"] . "</td>";
 						$creatorID = $category["creatorID"];
-						$creator_query = do_query("SELECT users.Username as 'creator' FROM users WHERE users.id=$creatorID");
+						$creator_query = do_query("SELECT users.Username as 'creator' FROM coffee_user_db.users WHERE users.id=$creatorID");
 						echo "<td>" . mysqli_fetch_assoc($creator_query)["creator"]. "</td>";
 						echo "</tr>";
 					}

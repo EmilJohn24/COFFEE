@@ -1,7 +1,7 @@
 --Setup file
-DROP DATABASE IF EXISTS coffee_db;
-CREATE DATABASE IF NOT EXISTS coffee_db;
-USE coffee_db;
+DROP DATABASE IF EXISTS coffee_user_db;
+CREATE DATABASE IF NOT EXISTS coffee_user_db;
+USE coffee_user_db;
 
 --USER RELATED
 CREATE TABLE IF NOT EXISTS users(
@@ -33,11 +33,20 @@ CREATE TABLE IF NOT EXISTS categories_moderators(
 	PRIMARY KEY(userID, categoryID)
 
 );
+
+
 INSERT into categories_moderators values(1,1);
+
+DROP DATABASE IF EXISTS coffee_cred_db;
+CREATE DATABASE IF NOT EXISTS coffee_cred_db;
+USE coffee_cred_db;
+
 CREATE TABLE IF NOT EXISTS credential_master_list(
 	id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	name varchar(255) NOT NULL
 );
+
+
 
 INSERT into credential_master_list(name) value("Historian"); --id=1
 --connection between potential credentials and the categories they can be used in
@@ -62,6 +71,10 @@ INSERT into user_credentials(userID, credentialID, status) values(1, 1, "APPROVE
 INSERT into user_credentials(userID, credentialID, status) values(2, 1, "APPROVED");
 --FORUM-RELATED
 --List of all possible credentials in the site 
+DROP DATABASE IF EXISTS coffee_db;
+CREATE DATABASE IF NOT EXISTS coffee_db;
+USE coffee_db;
+
 CREATE TABLE IF NOT EXISTS categories(
 	id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	name varchar(255) NOT NULL,

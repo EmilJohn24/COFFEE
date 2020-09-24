@@ -37,7 +37,7 @@
 						echo "<td>";
 						$last_post_query = do_query("SELECT posts.id,posts.title, posts.datetimePosted, users.Username 
 													FROM posts 
-													JOIN users
+													JOIN coffee_user_db.users
 													ON posts.userID = users.id
 													WHERE posts.topicID = $topicID
 													ORDER BY posts.datetimePosted DESC

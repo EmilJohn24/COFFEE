@@ -44,7 +44,7 @@
 													FROM responses 
 													JOIN posts
 													ON responses.postID = posts.id
-													JOIN users
+													JOIN coffee_user_db.users
 													ON responses.userID = users.ID
 													WHERE responses.postID = $postID
 													ORDER BY posts.datetimePosted DESC

@@ -7,7 +7,7 @@
 		
 		$response_query = do_query("SELECT responses.content, responses.datetimePosted, responses.userID, responses.postID
 									FROM responses
-									JOIN users
+									JOIN coffee_user_db.users
 									ON responses.userID = users.id
 									WHERE responses.id = $response_id
 									");

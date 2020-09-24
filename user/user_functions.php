@@ -24,12 +24,12 @@
 	define("SESSION_ID_MAX", pow(10, 7) - 1);
 	function user_login($username, $password){
 		global $rec_sql_conn;
-		$login_query_str = "SELECT id FROM users WHERE Username='$username' AND Password='$password'";
+		$login_query_str = "SELECT id FROM coffee_user_db.users WHERE Username='$username' AND Password='$password'";
 		if($login_query = mysqli_query($rec_sql_conn, $login_query_str)){
 			if(mysqli_num_rows($login_query) == 1){
 				$login_id = mysqli_fetch_array($login_query)['id'];
 				$session_id = rand(SESSION_ID_MIN, SESSION_ID_MAX);
-				$session_insertion_query_str = "INSERT into sessions(id, userID) values($session_id, $login_id);";
+				$session_insertion_query_str = "INSERT into coffee_user_db.sessions(id, userID) values($session_id, $login_id);";
 				if ($session_insert_query = mysqli_query(get_sql_conn(), $session_insertion_query_str))
 					return $session_id;
 				else die("Login failed: session could not be initialized" . mysqli_error(get_sql_conn()));
@@ -43,7 +43,7 @@
 	
 	function username_check($username){
 		global $rec_sql_conn;
-		$username_check_query_str = "SELECT * FROM users WHERE
+		$username_check_query_str = "SELECT * FROM coffee_user_db.users WHERE
 		UserName='$username'";
 		if ($check_query = mysqli_query($rec_sql_conn, $username_check_query_str)){
 			return mysqli_num_rows($check_query) == 0;
@@ -56,7 +56,7 @@
 	
 	function user_register($lname, $fname, $username, $password, $email){
 		global $rec_sql_conn, $error_collection;
-		$register_query_str = "INSERT INTO users(LastName, FirstName,
+		$register_query_str = "INSERT INTO coffee_user_db.users(LastName, FirstName,
 							Username, Password, Email)
 			values('$lname', '$fname', '$username', '$password', '$email')";
 		if (count($error_collection) > 0) return false;

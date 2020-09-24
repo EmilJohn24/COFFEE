@@ -43,8 +43,8 @@ function post_form_cleansing(){
 	
 function get_session_user($session_id){
 	$session_user_query_str = "SELECT *
-							FROM sessions
-							JOIN users
+							FROM coffee_user_db.sessions
+							JOIN coffee_user_db.users
 							ON sessions.userID = users.id
 							WHERE sessions.id=$session_id;";
 	$session_user = mysqli_query(get_sql_conn(), $session_user_query_str);
@@ -68,15 +68,15 @@ function do_query($query_str){
 
 function is_moderator_in($user_id, $category_id){
 	$moderator_query = do_query("SELECT *
-						FROM categories_moderators
+						FROM coffee_user_db.categories_moderators
 						WHERE userID=$user_id AND categoryID=$category_id");
 	return mysqli_num_rows($moderator_query) > 0;
 }
 
 function query_moderators_in($category_id){
 	return do_query("SELECT *
-					FROM categories_moderators cm
-					JOIN users 
+					FROM coffee_user_db.categories_moderators cm
+					JOIN coffee_user_db.users 
 					ON cm.userID = users.id
 					WHERE cm.categoryID=$category_id");
 								
@@ -84,10 +84,10 @@ function query_moderators_in($category_id){
 
 function query_user_credentials_in($user_id, $category_id){
 	$expertise_query = "SELECT cml.name, uc.evidence_file_dir 
-						FROM user_credentials uc
-						JOIN credential_category_connection ccc
+						FROM coffee_cred_db.user_credentials uc
+						JOIN coffee_cred_db.credential_category_connection ccc
 						ON uc.credentialID = ccc.credentialID
-						JOIN credential_master_list cml
+						JOIN coffee_cred_db.credential_master_list cml
 						ON cml.id = uc.credentialID
 						WHERE ccc.categoryID=$category_id AND uc.status='APPROVED' AND uc.userID=$user_id;";
 	return do_query($expertise_query);
@@ -95,10 +95,10 @@ function query_user_credentials_in($user_id, $category_id){
 
 function query_user_credentials($user_id, $category_id){
 	$expertise_query = "SELECT cml.name, uc.evidence_file_dir , uc.status
-						FROM user_credentials uc
-						JOIN credential_category_connection ccc
+						FROM coffee_cred_db.user_credentials uc
+						JOIN coffee_cred_db.credential_category_connection ccc
 						ON uc.credentialID = ccc.credentialID
-						JOIN credential_master_list cml
+						JOIN coffee_cred_db.credential_master_list cml
 						ON cml.id = uc.credentialID
 						WHERE ccc.categoryID=$category_id AND uc.userID=$user_id;";
 	return do_query($expertise_query);
@@ -107,12 +107,12 @@ function query_user_credentials($user_id, $category_id){
 function query_pending_credentials_from($category_id){
 	$expertise_query = "SELECT cml.name AS 'Credential', uc.evidence_file_dir AS 'Evidence',
 								users.Username AS 'Username', uc.UserID, uc.credentialID
-						FROM user_credentials uc
-						JOIN credential_category_connection ccc
+						FROM coffee_cred_db.user_credentials uc
+						JOIN coffee_cred_db.credential_category_connection ccc
 						ON uc.credentialID = ccc.credentialID
-						JOIN credential_master_list cml
+						JOIN coffee_cred_db.credential_master_list cml
 						ON cml.id = uc.credentialID
-						JOIN users
+						JOIN coffee_user_db.users
 						ON users.id = uc.userID
 						WHERE ccc.categoryID=$category_id AND uc.status='PENDING'";
 	return do_query($expertise_query);
@@ -121,8 +121,8 @@ function query_pending_credentials_from($category_id){
 
 function query_credential_ids_from($category_id){
 	$expertise_query = "SELECT cml.id, cml.name
-					FROM credential_master_list cml
-					JOIN credential_category_connection ccc
+					FROM coffee_cred_db.credential_master_list cml
+					JOIN coffee_cred_db.credential_category_connection ccc
 					ON cml.id = ccc.credentialID	
 					WHERE ccc.categoryID=$category_id;";
 	return do_query($expertise_query);
@@ -130,12 +130,12 @@ function query_credential_ids_from($category_id){
 
 function query_experts_from($category_id){
 	$experts_query = "SELECT users.id, users.Username, uc.evidence_file_dir, cml.name AS 'Position'
-						FROM user_credentials uc
-						JOIN credential_category_connection ccc
+						FROM coffee_cred_db.user_credentials uc
+						JOIN coffee_cred_db.credential_category_connection ccc
 						ON uc.credentialID = ccc.credentialID
-						JOIN credential_master_list cml
+						JOIN coffee_cred_db.credential_master_list cml
 						ON cml.id = uc.credentialID
-						JOIN users
+						JOIN coffee_user_db.users
 						ON uc.userID = users.id
 						WHERE ccc.categoryID=$category_id";
 	return do_query($experts_query);
@@ -143,12 +143,12 @@ function query_experts_from($category_id){
 
 function query_experts_from_like($category_id, $like_query){
 	$experts_query = "SELECT users.id, users.Username, uc.evidence_file_dir, cml.name AS 'Position'
-						FROM user_credentials uc
-						JOIN credential_category_connection ccc
+						FROM coffee_cred_db.user_credentials uc
+						JOIN coffee_cred_db.credential_category_connection ccc
 						ON uc.credentialID = ccc.credentialID
-						JOIN credential_master_list cml
+						JOIN coffee_cred_db.credential_master_list cml
 						ON cml.id = uc.credentialID
-						JOIN users
+						JOIN coffee_user_db.users
 						ON uc.userID = users.id
 						WHERE ccc.categoryID=$category_id 
 								AND users.Username LIKE '%$like_query%'";
@@ -170,7 +170,7 @@ function query_response_ids_from($post_id){
 }
 
 function get_user_info_query($user_id){
-	$user_query_str = "SELECT * FROM users WHERE id=$user_id";
+	$user_query_str = "SELECT * FROM coffee_user_db.users WHERE id=$user_id";
 	return do_query($user_query_str);
 }
 
