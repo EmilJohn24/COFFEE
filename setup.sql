@@ -33,6 +33,7 @@ CREATE TABLE IF NOT EXISTS categories_moderators(
 	PRIMARY KEY(userID, categoryID)
 
 );
+INSERT into categories_moderators values(1,1);
 CREATE TABLE IF NOT EXISTS credential_master_list(
 	id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	name varchar(255) NOT NULL
@@ -53,11 +54,12 @@ CREATE TABLE IF NOT EXISTS user_credentials(
 	userID int NOT NULL,
 	credentialID int NOT NULL,
 	evidence_file_dir text,
-	status ENUM("PENDING", "APPROVED") DEFAULT "PENDING",
+	status ENUM("PENDING", "APPROVED", "REJECTED") DEFAULT "PENDING",
 	PRIMARY KEY(userID, credentialID)
 );
 
 INSERT into user_credentials(userID, credentialID, status) values(1, 1, "APPROVED");
+INSERT into user_credentials(userID, credentialID, status) values(2, 1, "APPROVED");
 --FORUM-RELATED
 --List of all possible credentials in the site 
 CREATE TABLE IF NOT EXISTS categories(

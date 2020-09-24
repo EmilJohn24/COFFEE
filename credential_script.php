@@ -38,6 +38,8 @@
 												values($current_user_id, $credential_id, '$evidence_url');
 										");
 	}
+	header("Location: credentials.php");
+
 
 //End file upload version
 ?>
