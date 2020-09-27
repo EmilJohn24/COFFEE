@@ -2,13 +2,18 @@
 	<?php include "../general_functions.php";
 		$category_id = $_GET["categoryID"];
 	?>
+	<head>
+		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+		<link rel="stylesheet" href="styles.css">
+	</head>
 	<body>
-	<form class="moderator-add" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="GET">
+	
+	<form class="moderator-add w3-center" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="GET">
 					<!--q for query-->
-		Search: <input type="text" name="user_query"/> <br/>
+		Search <input type="text" class="w3-border w3-input w3-center  w3-hover-light-gray" name="user_query"/> <br/>
 		<input type="hidden" name="categoryID" value="<?php echo $category_id; ?>"/>
 	</form>
-		<table id="search_results" class="forum_table w3-table w3-bordered">
+		<table id="search_results" class="forum_table w3-table-all w3-hoverable w3-border w3-row w3-table">
 			    <colgroup>
 				   <col span="1" style="width: 80%;">
 				   <col span="1" style="width: 20%;">

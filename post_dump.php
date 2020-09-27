@@ -1,25 +1,21 @@
 <html>
 	<head>
-		<?php
-			include 'header.php';
-			//NOTE: It might be possible to make this into a function (see category.php)
-			$id = $_GET["id"];
-			$topic_query = do_query("SELECT * from topics WHERE id=$id");
-			if (mysqli_num_rows($topic_query) == 0) die("ERROR 404: Topic not found");
-			$topic_info = mysqli_fetch_assoc($topic_query);
-		?>
-		
-		<title><?php echo $category_info["name"]; ?></title>
+	<?php
+		include 'header.php';
+	?>
 	</head>
+	
+	
 	<body>
+		<div id="posts" class="w3-container">
 		<div id="posts" class="posts w3-panel">
-			<a class="w3-button w3-green w3-hover-brown" href="./new_post.php?id=<?php echo $id;?>">+ New Post</a>
 			<table id="posts" class="forum_table w3-table w3-bordered">
 			    <colgroup>
 				   <col span="1" style="width: 20%;">
-				   <col span="1" style="width: 40%;">
-				   <col span="1" style="width: 30%;">
-				   <col span="1" style="width: 10%;">
+				   <col span="1" style="width: 20%;">
+				   <col span="1" stype="width: 20%;">
+				   <col span="1" style="width: 20%;">
+				   <col span="1" style="width: 20%;">
 				</colgroup>
     
 				<tr class="table_header">
@@ -27,11 +23,13 @@
 					<th>Posted by</th>
 					<th>Last Reply By</th>
 					<th>Reply Count</th>
+					<th>Topic</th>
 				</tr>
 				<?php
-					$post_results = query_posts($topic_info["id"]);
+					$post_results = do_query("SELECT * from posts ORDER BY datetimePosted DESC");;
 					while($post = mysqli_fetch_assoc($post_results)){
 						$postID = $post["id"];
+						$topicID = $post["topicID"];
 						echo "<tr class='table_content'>";
 						echo "<td><a href='./post.php?id=$postID'>" . $post["title"] . "</a></td>";	
 						$posterUserID = $post["userID"];
@@ -62,14 +60,20 @@
 						echo "</td>";
 						//End Last reply
 						echo "<td>$reply_count</td>";
+						$topic_name = mysqli_fetch_assoc(do_query("SELECT name FROM topics WHERE id=$topicID"))["name"];
+						echo "<td><a href='topic.php?id=$topicID'>$topic_name</a></td>";
 						echo "</tr>";
 					}
 				?>
 			</table>
 		
 		</div>
-		<?php include 'footer.php' ?>
+			
+		
+		</div>
+		<?php include 'footer.php'; ?>
 	</body>
+
 
 
 </html>

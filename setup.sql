@@ -134,8 +134,16 @@ CREATE TABLE IF NOT EXISTS vote_master_list(
 	responseID int
 	/* should be nulled out if it is an upvote for the post */
 );
+
+CREATE TABLE IF NOT EXISTS view_master_list(
+	postID int NOT NULL,
+	userID int NOT NULL,
+	datetimeViewed timestamp DEFAULT CURRENT_TIMESTAMP()
+);
+
 CREATE TABLE IF NOT EXISTS answer_requests(
 	requestorUserID int NOT NULL,
 	requestedUserID int NOT NULL,
+	status ENUM("SENT", "SEEN", "ANSWERED") NOT NULL,
 	postID int NOT NULL
 ); 

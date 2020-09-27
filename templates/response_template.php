@@ -22,24 +22,32 @@
 		$votes = $upvotes - $downvotes;
 		//GET USER VOTE
 		$user_vote = "NONE";
-		if($current_user_info = get_login_user())
+		$newResponseClass = 'w3-border w3-gray';
+		if (!empty_query($credential_query)) {
+				$newResponseClass = "w3-light-green w3-bar";
+			}
+		if($current_user_info = get_login_user()){
 			$user_vote = get_vote_by($current_user_info["userID"], $response_data["postID"], $response_id);
-		
+		}
 		
 
 	?>
+	
 	<body>
-		<div class="response">
-			<div class="w3-panel response-header <?php if (empty_query($credential_query))echo 'w3-gray'; else echo 'w3-light-green';?>">
+		<div style="z-index: 10" class="center w3-border-right w3-border-bottom w3-container response">
+		<?php
+		if (!empty_query($credential_query)) {
+				echo "<a href='' class='w3-right w3-button w3-green w3-hover-blue'>&check; Expert</a>";
+			}
+		?>
+			<div class="w3-container response-header <?php echo $newResponseClass;?>">
 				<div class="w3-third">	
-					<div class="votes buttons w3-quarter">
+					<div class="votes buttons w3-half">
 						<span class="vote"><?php echo $votes;?>
-						<a href="vote_script.php?vote=UP&postID=<?php echo $response_data["postID"]; ?>
-													&responseID=<?php echo $response_id; ?>">
+						<a class="w3-button" href="vote_script.php?vote=UP&postID=<?php echo $response_data['postID']; ?>&responseID=<?php echo $response_id; ?>">
 							<img height="10" src="images/upvote_colored.png" class="<?php if ($user_vote != 'UP') echo 'greyed-out'; ?>" />
 						</a>
-						<a href="vote_script.php?vote=DOWN&postID=<?php echo $response_data["postID"]; ?>
-													&responseID=<?php echo $response_id; ?>">
+						<a class="w3-button" href="vote_script.php?vote=DOWN&postID=<?php echo $response_data['postID']; ?>&responseID=<?php echo $response_id; ?>">
 							<img height="10" src="images/downvote_colored.png" class="<?php if ($user_vote != 'DOWN') echo 'greyed-out'; ?>"/>
 						</a>
 	
@@ -52,7 +60,7 @@
 				</div>
 			</div>
 
-			<div class="response-body w3-panel">
+			<div class="w3-white response-body w3-border w3-container">
 				<?php echo $response_data["content"]; ?>
 			</div>
 		</div>

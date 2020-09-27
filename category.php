@@ -11,9 +11,11 @@
 		
 		<title><?php echo $category_info["name"]; ?></title>
 	</head>
-	<body>
+	<body>	
 		<div id="topics" class="topics w3-panel">
-			<table id="topics" class="forum_table w3-table w3-bordered">
+			<h2><?php echo $category_info["name"]; ?></h2>
+			<a class="w3-button w3-hover-blue w3-green" href="add_topic.php?id=<?php echo $id; ?>">+ New Topic</a>
+			<table id="topics" class="w3-hoverable forum_table w3-table w3-bordered">
 			    <colgroup>
 				   <col span="1" style="width: 20%;">
 				   <col span="1" style="width: 50%;">
@@ -62,6 +64,8 @@
 			</table>
 		
 		</div>
+		<?php include 'footer.php'; ?>
+
 	</body>
 
 

@@ -9,7 +9,13 @@
 		$post_data = mysqli_fetch_assoc($post_query);
 		$user_id = $post_data["userID"];
 		$user_info = mysqli_fetch_assoc(get_user_info_query($user_id));
+		//view counter
+		if($current_user_info = get_login_user()){
+			$current_user_id = $current_user_info["id"];
+			$view_counter_query = do_query("INSERT into view_master_list(postID, userID) VALUES($id, $current_user_id)");
+		}
 		
+		//end view counter
 		if($_SERVER['REQUEST_METHOD'] == "POST"){
 			if($current_user_info = get_login_user()){
 				$current_user_id = $current_user_info["id"];
@@ -23,7 +29,7 @@
 	?>
 	
 	</head>
-	<body>
+	<body class="w3-light-gray">
 		<div class="post w3-panel">
 			<div class="w3-panel post-header w3-light-blue">
 				<div class="w3-third">	
@@ -34,22 +40,45 @@
 					<span><?php echo $post_data["datetimePosted"];?></span>
 				</div>
 			</div>
-			<div class="post-body w3-panel">
-				<?php echo $post_data["content"]; ?>
+			<div class="w3-white">
+				<div class="post-body w3-panel">
+					<?php echo $post_data["content"]; ?>
+				</div>
+				<div class="w3-right utilities w3-panel">
+					
+					 <a class="w3-light-blue w3-button" href="post.php?id=<?php echo $id; ?>&sort=VOTES">Sort by Votes</a>
+					<a class="w3-light-blue w3-button" href="a2a.php?id=<?php echo $id; ?>">Request for Answer</a>
+				</div>
 			</div>
 		</div>
-		<?php
-			$responses_id_query = query_response_ids_from($id);
-			while ($response_id = mysqli_fetch_assoc($responses_id_query)["id"]){
-				include 'templates/response_template.php';
-			}
-		?>
+		<div class="w3-light-gray responses">
+			<?php
+				$responses_id_query = query_response_ids_from($id, $_GET["sort"]);
+				while ($response_id = mysqli_fetch_assoc($responses_id_query)["id"]){
+					include 'templates/response_template.php';
+				}
+			?>
+		</div>
 		
 		
 		<form class="w3-container" id="newResponse" action="<?php echo cleanse($_SERVER['PHP_SELF']); ?>?id=<?php echo $id;?>" method="POST">
-			<textarea name="newResponse" class="w3-input w3-border" rows="10" cols="10" placeholder="New Post"></textarea>
-			<input type="submit" text="Post" name="post" />
+			<?php
+			$newResponseClass = 'w3-border';
+			if($current_user_info = get_login_user()){
+				$current_user_id = $current_user_info["id"];
+				$category_id = get_post_category_id($id);
+				$credential_query = query_user_credentials_in($current_user_id, $category_id);
+				if (!empty_query($credential_query)) {
+					echo "<a href='w3-right' class='w3-button w3-green w3-hover-blue'>&check; Expert</a>";
+					$newResponseClass = "w3-border-green w3-bar w3-topbar w3-bottombar w3-leftbar w3-rightbar";
+				}
+			}
+				
+			?>
+			<textarea name="newResponse" class="w3-input w3-border <?php echo $newResponseClass; ?>" rows="5" cols="1" placeholder="New Post"></textarea>
+			<input class="w3-input w3-button w3-right w3-cyan" type="submit" text="Post" name="post" />
 		</form>
+		<?php include 'footer.php'; ?>
 	</body>
 
 

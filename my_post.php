@@ -1,42 +1,40 @@
 <html>
 	<head>
-		<?php
-			include 'header.php';
-			//NOTE: It might be possible to make this into a function (see category.php)
-			$id = $_GET["id"];
-			$topic_query = do_query("SELECT * from topics WHERE id=$id");
-			if (mysqli_num_rows($topic_query) == 0) die("ERROR 404: Topic not found");
-			$topic_info = mysqli_fetch_assoc($topic_query);
-		?>
+		<?php include 'header.php'; 
+		$current_user_id = 0;
+		if($current_user_info = get_login_user()){
+			$current_user_id = $current_user_info["id"];
+		} else header("Location: login.php");
 		
-		<title><?php echo $category_info["name"]; ?></title>
+		?>
+
 	</head>
-	<body>
-		<div id="posts" class="posts w3-panel">
-			<a class="w3-button w3-green w3-hover-brown" href="./new_post.php?id=<?php echo $id;?>">+ New Post</a>
-			<table id="posts" class="forum_table w3-table w3-bordered">
-			    <colgroup>
-				   <col span="1" style="width: 20%;">
-				   <col span="1" style="width: 40%;">
-				   <col span="1" style="width: 30%;">
-				   <col span="1" style="width: 10%;">
-				</colgroup>
-    
-				<tr class="table_header">
-					<th>Name</th>
-					<th>Posted by</th>
-					<th>Last Reply By</th>
-					<th>Reply Count</th>
-				</tr>
-				<?php
-					$post_results = query_posts($topic_info["id"]);
+	<body>	
+	
+		<div class="w3-container w3-cell-row" id="content">
+			<div id="posts" class="posts w3-container w3-cell">
+				<div>
+					<h2>My Posts</h2>
+				</div>
+				<table id="my-posts" class="w3-forum_table w3-table w3-bordered w3-hoverable">
+					<colgroup>
+					   <col span="1" style="width: 20%;">
+					   <col span="1" style="width: 30%;">
+					   <col span="1" style="width: 10%;">
+					</colgroup>
+		
+					<tr class="table_header">
+						<th>Name</th>
+						<th>Last Post</th>
+						<th>Reply Count</th>
+					</tr>
+					<?php
+					$post_results = query_posts_by($current_user_id);
 					while($post = mysqli_fetch_assoc($post_results)){
 						$postID = $post["id"];
 						echo "<tr class='table_content'>";
 						echo "<td><a href='./post.php?id=$postID'>" . $post["title"] . "</a></td>";	
 						$posterUserID = $post["userID"];
-						$posterUsername =  mysqli_fetch_assoc(get_user_info_query($posterUserID))["Username"];
-						echo "<td>$posterUsername</td>";
 						//Last reply
 						echo "<td>";
 						
@@ -65,11 +63,14 @@
 						echo "</tr>";
 					}
 				?>
-			</table>
-		
+				</table>
+			
+			</div>
+			<div id="right-side-bar" class="w3-cell">
+				<?php include 'right_side_bar.php'; ?>
+			</div>
 		</div>
-		<?php include 'footer.php' ?>
+		<?php include 'footer.php'; ?>
 	</body>
-
 
 </html>

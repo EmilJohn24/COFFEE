@@ -1,7 +1,7 @@
 <html>
 	<body>
 	<div class="credentials w3-panel">
-			<table class="forum_table w3-table w3-bordered">
+			<table class="forum_table w3-border w3-hoverable w3-table w3-bordered">
 			    <colgroup>
 				   <col span="1" style="width: 70%;">
 				   <col span="1" style="width: 20%;">

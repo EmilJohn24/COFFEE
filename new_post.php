@@ -17,15 +17,16 @@
 		?>
 	
 	</head>
-	
-	<form action="<?php echo cleanse($_SERVER['PHP_SELF']);?>?id=<?php echo $topicID; ?>" method="POST">
-			<label for="title">Title:</label>
-			<input name="title" placeholder="Title" type="text" /><br/>
-			<label for="content">Content:</label><br/>
-			<textarea name="content" class="w3-input w3-border" rows="10" cols="10" placeholder="New Post"></textarea>
-			<input type="submit" text="Post" name="post" />
-	</form>
-
+	<body>
+		<form action="<?php echo cleanse($_SERVER['PHP_SELF']);?>?id=<?php echo $topicID; ?>" method="POST">
+				<label for="title">Title:</label>
+				<input name="title" placeholder="Title" type="text" /><br/>
+				<label for="content">Content:</label><br/>
+				<textarea name="content" class="w3-input w3-border" rows="10" cols="10" placeholder="New Post"></textarea>
+				<input type="submit" text="Post" name="post" />
+		</form>
+		
+	</body>
 
 
 </html>

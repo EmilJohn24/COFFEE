@@ -10,7 +10,7 @@
 	
 	</head>
 	<body>
-		<div id="credentials" class="credentials w3-panel">
+		<div id="credentials" class="credentials w3-container w3-center center">
 			<?php
 				$categories_query = query_categories();
 				while ($category = mysqli_fetch_assoc($categories_query)){
@@ -24,61 +24,75 @@
 		<div id="add_credentials" class="w3-panel w3-twothirds">
 			<h2>Add Credential</h2>
 			<form id="credential_form" enctype="multipart/form-data" method="POST" action="credential_script.php">
-				<div class="w3-third credentials">
+				<div class="credentials w3-center">
 					<h3>Title</h3><br/>
 					<!--Start select-->
-					<input type="radio" name="credential_insert_method" value="select">
-					<select name="credential_id" form="credential_form" class="w3-input">
-						<?php
-							$categories_query= query_categories();
-							while ($category = mysqli_fetch_assoc($categories_query)){
+					<div class="title-section">
+						<div class="w3-panel select-mode w3-hover-blue">
+							<input type="radio" class="w3-input w3-border" name="credential_insert_method" value="select"/>
+							<select name="credential_id" form="credential_form" class="w3-input w3-border">
+								<?php
+									$categories_query= query_categories();
+									while ($category = mysqli_fetch_assoc($categories_query)){
 
-								$category_name = $category["name"];
-								$category_id = $category["id"];
-								echo "<optgroup label='$category_name'>";
-								$credential_id_query = query_credential_ids_from($category_id);
-								while ($credential = mysqli_fetch_assoc($credential_id_query)){
-									$credential_id = $credential["id"];
-									$credential_name = $credential["name"];
-									echo "<option value='$credential_id'>$credential_name</option>";
-								}
-								echo "</optgroup>";
-							}
-						?>
-					</select>
-					<!--End select-->
-					-or- 
-					<br/>
-					<!--Start manual-->
-					<input type="radio" name="credential_insert_method" value="manual"/>
-					<input type="text" name="credential_name" placeholder="Title"/><br/>
-					<label for="category_id">Category</label>
-					<select placeholder="Category" 
-							name="category_id" form="credential_form" class="w3-input">
-						<?php
-							$categories_query = query_categories();
-							while ($category = mysqli_fetch_assoc($categories_query)){
-								$category_name = $category["name"];
-								$category_id = $category["id"];
-								echo "<option value='$category_id'>$category_name</option>";
-							}
-							?>
-					</select>
-					<!--End Manual-->
+										$category_name = $category["name"];
+										$category_id = $category["id"];
+										echo "<optgroup label='$category_name'>";
+										$credential_id_query = query_credential_ids_from($category_id);
+										while ($credential = mysqli_fetch_assoc($credential_id_query)){
+											$credential_id = $credential["id"];
+											$credential_name = $credential["name"];
+											echo "<option value='$credential_id'>$credential_name</option>";
+										}
+										echo "</optgroup>";
+									}
+								?>
+							</select>
+						</div>
+						<!--End select-->
+						-or- 
+						<br/>
+						<!--Start manual-->
+						<div class="w3-panel select-mode w3-hover-blue">
+
+							<input type="radio" class="w3-input" name="credential_insert_method" value="manual"/><br/>
+							<input type="text" name="credential_name" placeholder="Title"/><br/>
+							<label for="category_id">Category</label>
+							<select placeholder="Category" 
+									name="category_id" form="credential_form" class="w3-input">
+								<?php
+									$categories_query = query_categories();
+									while ($category = mysqli_fetch_assoc($categories_query)){
+										$category_name = $category["name"];
+										$category_id = $category["id"];
+										echo "<option value='$category_id'>$category_name</option>";
+									}
+									?>
+							</select>
+						</div>
+						<!--End Manual-->
+					</div>
 				</div>
-				<div class="w3-third w3-right credentials">
+				<div class="credentials w3-center center">
+					
 					<h3>Evidence</h3><br/>
-					<input type="radio" name="evidence_method" value="upload">
-					<input type="file" name="evidence_file" id="evidence_file"/><br/>
+					<div class="upload w3-hover-light-gray">
+						<input class="w3-input" type="radio" name="evidence_method" value="upload"><br>
+						<input class="w3-input w3-white w3-border w3-center" type="file" name="evidence_file" id="evidence_file"/>
+					</div>
+					<br/>
 					-or-
 					<br/>
-					<input type="radio" name="evidence_method" value="url">
-					<label for="evidence_url">URL</label>
-					<input type="url" name="evidence_url"/><br/>
-					<input type="submit" name="submit_evidence"/>
+					<div class="url">
+						<input type="radio" name="evidence_method" value="url"><br>
+						<label for="evidence_url">URL</label>
+						<input type="url" name="evidence_url"/><br/>
+						<input type="submit" name="submit_evidence"/>
+					</div>
 				</div>
 			</form>
 		</div>
+		<?php include 'footer.php' ?>
 	</body>
 
 </html>

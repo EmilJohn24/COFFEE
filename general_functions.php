@@ -19,8 +19,8 @@ function cleanse($str){
 function html_reformat($str){
 	$str = cleanse($str);
 	$str = str_replace("\n", "<br/>", $str);
-	$bb_codes =  array("[b]", "[/b]", "[i]", "[/i]");
-	$html_tags = array("<b>", "</b>", "<i>", "</i>");
+	$bb_codes =  array("[b]", "[/b]", "[i]", "[/i]", "[quote]", "[/quote]");
+	$html_tags = array("<b>", "</b>", "<i>", "</i>", "<quote>", "</quote>");
 	$str = str_replace($bb_codes, $html_tags, $str);
 	//Add others later
 	return $str;
@@ -82,6 +82,14 @@ function query_moderators_in($category_id){
 								
 }
 
+function query_categories_moderated_by($user_id){
+	return do_query("SELECT *
+					FROM coffee_user_db.categories_moderators cm
+					JOIN categories
+					ON cm.categoryID = categories.id
+					WHERE userID=$user_id");
+}
+
 function query_user_credentials_in($user_id, $category_id){
 	$expertise_query = "SELECT cml.name, uc.evidence_file_dir 
 						FROM coffee_cred_db.user_credentials uc
@@ -93,6 +101,20 @@ function query_user_credentials_in($user_id, $category_id){
 	return do_query($expertise_query);
 }
 
+//New function
+function query_user_expertise($user_id){
+	$expertise_query = "SELECT ccc.categoryID, categories.name
+						FROM coffee_cred_db.user_credentials uc
+						JOIN coffee_cred_db.credential_category_connection ccc
+						ON uc.credentialID = ccc.credentialID
+						JOIN coffee_cred_db.credential_master_list cml
+						ON cml.id = uc.credentialID
+						JOIN categories
+						ON categories.id=ccc.categoryID
+						WHERE uc.status='APPROVED' AND uc.userID=$user_id;";
+	return do_query($expertise_query);
+}
+
 function query_user_credentials($user_id, $category_id){
 	$expertise_query = "SELECT cml.name, uc.evidence_file_dir , uc.status
 						FROM coffee_cred_db.user_credentials uc
@@ -100,7 +122,7 @@ function query_user_credentials($user_id, $category_id){
 						ON uc.credentialID = ccc.credentialID
 						JOIN coffee_cred_db.credential_master_list cml
 						ON cml.id = uc.credentialID
-						WHERE ccc.categoryID=$category_id AND uc.userID=$user_id;";
+						WHERE ccc.categoryID=$category_id AND uc.userID=$user_id AND uc.status='APPROVED';";
 	return do_query($expertise_query);
 }
 
@@ -164,8 +186,26 @@ function get_post_category_id($post_id){
 	return mysqli_fetch_assoc(do_query($query))["categoryID"];
 }
 
-function query_response_ids_from($post_id){
-	$query_str = "SELECT id FROM responses where postID=$post_id";
+
+function query_response_ids_from($post_id, $sort_type="DATETIME"){
+	switch($sort_type){
+		case "DATETIME":
+			$query_str = "SELECT id FROM responses where postID=$post_id";
+			break;
+		case "VOTES":
+			$query_str = "SELECT responses.id
+						  FROM responses 
+						  LEFT JOIN vote_master_list v 
+						  ON responses.id=v.responseID
+						  WHERE responses.postID=$post_id
+						  GROUP BY v.responseID
+						  ORDER BY SUM(CASE WHEN v.vote='UP' THEN 1 WHEN v.vote='DOWN' THEN -1 ELSE 0 END) DESC";
+			break;
+		default:
+			$query_str = "SELECT id FROM responses where postID=$post_id";
+			break;
+		
+	}
 	return do_query($query_str);
 }
 
@@ -186,6 +226,11 @@ function query_topics($categoryID){
 
 function query_posts($topicID){
 	$query_str = "SELECT * from posts WHERE topicID=$topicID";
+	return do_query($query_str);
+}
+
+function query_posts_by($userID){
+	$query_str = "SELECT * from posts WHERE userID=$userID";
 	return do_query($query_str);
 }
 
@@ -211,5 +256,20 @@ function get_vote_by($user_id, $post_id, $response_id){
 		return $vote_str;
 	}						
 				
+}
+
+
+function is_answered_by($requested_user_id, $post_id){
+	$query = do_query("SELECT COUNT(*) AS 'count'
+						FROM responses
+						WHERE userID=$requested_user_id 
+							AND postID=$post_id");
+	return mysqli_fetch_assoc($query)["count"] > 0;
+}
+
+
+function get_answer_requests_for($user_id){
+	$query_str = "SELECT * FROM answer_requests WHERE requestedUserID=$user_id";
+	return do_query($query_str);
 }
 ?>
