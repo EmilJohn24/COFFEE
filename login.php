@@ -29,10 +29,10 @@
 			<form class="w3-form" action="<?php echo cleanse($_SERVER["PHP_SELF"]); ?>" method="POST">
 				<span class="error"> <?php echo get_form_error("form"); ?> </span>
 				<br/>
-				<input class="w3-border w3-center w3-input" type="text" placeholder="Username" name="username"/>
+				<input class="w3-border w3-center w3-hover-light-gray w3-input" type="text" placeholder="Username" name="username"/>
 				<span class="error">* <?php echo get_form_error("username");?></span>
 				<br/>
-				<input class="w3-border w3-center w3-input" type="password" placeholder="Password" name="password"/>
+				<input class="w3-border w3-hover-light-gray w3-center w3-input" type="password" placeholder="Password" name="password"/>
 				<span class="error">* <?php echo get_form_error("password");?></span>
 				<br/>
 				<input type="submit" value="Login" style="margin: 10px;"/>

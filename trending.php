@@ -3,11 +3,12 @@
 	<?php
 		include 'header.php';
 	?>
+	<title>Trending</title>
 	</head>
-	
 	
 	<body>
 		<div class="w3-container">
+			<h2 class="w3-center center">Trending Posts</h2>
 			<div id="posts" class="posts w3-panel">
 				<table id="posts" class="forum_table w3-table w3-bordered">
 					<colgroup>

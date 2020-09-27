@@ -4,11 +4,12 @@
 		include 'header.php';
 	?>
 	</head>
-	
+	<title>Posts</title>
 	
 	<body>
 		<div id="posts" class="w3-container">
 		<div id="posts" class="posts w3-panel">
+			<h2 class="w3-center">All Posts</h2>
 			<table id="posts" class="forum_table w3-table w3-bordered">
 			    <colgroup>
 				   <col span="1" style="width: 20%;">

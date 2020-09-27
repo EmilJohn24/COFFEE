@@ -27,41 +27,44 @@ color: red;
 ?>
 </head>
 	<body>
-		<h1>Register</h1>
-		<form action="<?php echo cleanse($_SERVER["PHP_SELF"]); ?>" method="POST">
-			<span class="error"> <?php echo get_form_error("form"); ?> </span>
-			<br/>
-			<input type="text" placeholder="Last Name" name="lname" />
-			<span class="error">
-				* <?php echo get_form_error("lname");?>
-			</span>
-			<br/>
-			<input type="text" placeholder="First Name" name="fname" />
-			<span class="error">
-				* <?php echo get_form_error("fname");?>
-			</span>
-			<br/>
-			<input type="text" placeholder="Username" name="username"/>
-			<span class="error">
-				* <?php echo get_form_error("username");?>
-			</span>
-			<br/>
-			<input type="password" placeholder="Password" name="password"/>
-			<span class="error">
-				* <?php echo get_form_error("password");?>
-			</span>
-			<br/>
-			<input type="password" placeholder="Confirm Password" name="confirm_pw"/>
-			<span class="error">
-				* <?php echo get_form_error("confirm_pw");?>
-			</span>
-			<br/>
-			<input type="email" placeholder="Email" name="email"/>
-			<span class="error">
-				* <?php echo get_form_error("email");?>
-			</span>
-			<input type="submit" value="Register" /><br/>
-		</form>
+		<div class="w3-center center">
+			<h1>Register</h1>
+			<form action="<?php echo cleanse($_SERVER["PHP_SELF"]); ?>" method="POST">
+				<span class="error"> <?php echo get_form_error("form"); ?> </span>
+				<br/>
+				<input class="w3-input w3-border w3-center  w3-hover-light-gray" type="text" placeholder="Last Name" name="lname" />
+				<span class="error">
+					* <?php echo get_form_error("lname");?>
+				</span>
+				<br/>
+				<input class="w3-input w3-border w3-center  w3-hover-light-gray"  type="text" placeholder="First Name" name="fname" />
+				<span class="error">
+					* <?php echo get_form_error("fname");?>
+				</span>
+				<br/>
+				<input class="w3-input w3-border w3-center  w3-hover-light-gray"  type="text" placeholder="Username" name="username"/>
+				<span class="error">
+					* <?php echo get_form_error("username");?>
+				</span>
+				<br/>
+				<input class="w3-input w3-border w3-center  w3-hover-light-gray"  type="password" placeholder="Password" name="password"/>
+				<span class="error">
+					* <?php echo get_form_error("password");?>
+				</span>
+				<br/>
+				<input class="w3-input w3-border w3-center  w3-hover-light-gray"  type="password" placeholder="Confirm Password" name="confirm_pw"/>
+				<span class="error">
+					* <?php echo get_form_error("confirm_pw");?>
+				</span>
+				<br/>
+				<input class="w3-input w3-border w3-center  w3-hover-light-gray"  type="email" placeholder="Email" name="email"/>
+				<span class="error">
+					* <?php echo get_form_error("email");?>
+				</span>
+				<br/>
+				<input type="submit" value="Register" /><br/>
+			</form>
+		</div>
 		<?php include 'footer.php';?>
 	</body>
 </html>
