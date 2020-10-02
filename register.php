@@ -5,7 +5,7 @@
 color: red;
 }
 </style>
-<title>Lopez - Registration Page</title>
+<title>COFFEE - Registration</title>
 <?php
 	include 'header.php';
 	include 'user_functions.php';

@@ -52,16 +52,41 @@
 						</a>
 	
 					</div>
-					<span class="w3-text-black"><?php echo $user_info["Username"]; ?> </span>
-					<span class="w3-text-gray"><?php if(!empty_query($credential_query)) echo $credential_info["name"]; ?></span>
+					<span class="w3-text-white"><?php echo $user_info["FirstName"] . ' ' . $user_info["LastName"]; ?> </span><br>
+					<span class="w3-text-gray">
+						<?php if(!empty_query($credential_query)) {
+							$credential_url = $credential_info["evidence_file_dir"];
+							echo "<a class='w3-text-grey' href='$credential_url'>" . $credential_info["name"] . "</a>"; 
+						}
+						?>
+					</span>
+
 				</div>
 				<div class="w3-third">
 					<span><?php echo $response_data["datetimePosted"];?></span>
 				</div>
+				<div>
+					<span class="w3-text-brown w3-right"><?php echo $user_info["Username"]; ?></span>
+				</div>
+
 			</div>
 
 			<div class="w3-white response-body w3-border w3-container">
 				<?php echo $response_data["content"]; ?>
+			</div>
+			<div class="w3-container delete w3-right">
+				<?php
+					$response_info = mysqli_fetch_assoc(do_query("SELECT userID, postID from responses WHERE id=$response_id"));
+					$post_id = $response_info["postID"];
+					$owner_user_id = $response_info["userID"];
+					$category_id = get_post_category_id($post_id);
+					$current_user = get_login_user();
+					$current_user_id = $current_user["id"];
+					if (is_moderator_in($current_user_id, $category_id) || $current_user_id == $owner_user_id){
+						echo "<a href='delete.php?id=$response_id'>Delete</a>";
+					} 
+				
+				?>
 			</div>
 		</div>
 		

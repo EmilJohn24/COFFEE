@@ -51,7 +51,7 @@
 			
 			</div>
 			<div class="my-categories">
-				<h2 class="w3-panel w3-brown">My Categories</h2>
+				<h2 class="w3-panel w3-brown">Moderated</h2>
 				<ul class="w3-ul">
 					<!--<li class="w3-bar">
 						
@@ -80,7 +80,7 @@
 			
 			</div>
 			<div class="my-expertise">
-				<h2 class="w3-panel w3-brown">My Expertise</h2>
+				<h2 class="w3-panel w3-brown" style="width:100%">List of Expertise</h2>
 				
 				<?php
 					if(!empty($current_user)){

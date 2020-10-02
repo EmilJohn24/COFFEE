@@ -22,9 +22,14 @@
 				header("Location: post.php?id=$post_id");
 			}
 		?>
+		
+		
+		<title>A2A - <?php echo $post_info["title"]; ?></title>
 	</head>
 	
 	<body>
+	<h2><?php echo $post_info["title"]; ?></h2>
+
 		<div class="post w3-panel">
 			<div class="w3-panel post-header w3-light-blue">
 				<div class="w3-third">	

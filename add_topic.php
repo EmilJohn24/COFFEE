@@ -15,7 +15,7 @@
 			}
 
 		?>
-	
+		<title>Add Topic</title>
 	</head>
 	<body>
 		<div class="w3-center w3-container center">

@@ -19,8 +19,8 @@ function cleanse($str){
 function html_reformat($str){
 	$str = cleanse($str);
 	$str = str_replace("\n", "<br/>", $str);
-	$bb_codes =  array("[b]", "[/b]", "[i]", "[/i]", "[quote]", "[/quote]");
-	$html_tags = array("<b>", "</b>", "<i>", "</i>", "<quote>", "</quote>");
+	$bb_codes =  array("[b]", "[/b]", "[i]", "[/i]", "[quote]", "[/quote]", "'");
+	$html_tags = array("<b>", "</b>", "<i>", "</i>", "<quote>", "</quote>", "\'");
 	$str = str_replace($bb_codes, $html_tags, $str);
 	//Add others later
 	return $str;
@@ -122,7 +122,7 @@ function query_user_credentials($user_id, $category_id){
 						ON uc.credentialID = ccc.credentialID
 						JOIN coffee_cred_db.credential_master_list cml
 						ON cml.id = uc.credentialID
-						WHERE ccc.categoryID=$category_id AND uc.userID=$user_id AND uc.status='APPROVED';";
+						WHERE ccc.categoryID=$category_id AND uc.userID=$user_id";
 	return do_query($expertise_query);
 }
 

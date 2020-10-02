@@ -14,8 +14,9 @@
 					header("Location: index.php");
 				} else die("You must be logged in to add a category.");				
 			}
-
 		?>
+		
+		<title>Add Category</title>
 	
 	</head>
 	<body>

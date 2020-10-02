@@ -13,16 +13,17 @@
 			if (!is_moderator_in($current_user_id, $id))die("Restricted access: You are not a moderator");
 
 		?>
+		<title>Moderate <?php echo $category_title; ?></title>
 	</head>
 	
 	<body>
 		<div>
-			<div id="moderators" class="w3-container">
+			<div id="moderators" class="w3-container center w3-center">
 				<h2><?php echo $category_title; ?> Moderation Page</h2>
-				<div id="expert-search" class="search w3-container w3-center center">
+				<div id="expert-search" class="iframe-container search w3-topbar w3-bottombar w3-container w3-center center">
 					<h2>Add Moderator</h2>
-
-					<iframe style="width:60%;" class="w3-center w3-border" src="moderator/add_moderator.php?categoryID=<?php echo $id;?>" name="user_search">
+		
+					<iframe style="width:60%; height:40%" class="w3-center w3-border" src="moderator/add_moderator.php?categoryID=<?php echo $id;?>" name="user_search">
 					
 					</iframe>
 				</div>

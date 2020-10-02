@@ -26,15 +26,20 @@
 			}
 			else die("You must be logged in to post.");
 		}
+		
 	?>
+	
+	<title>COFFEE - <?php echo $post_data["title"]; ?></title>
+
 	
 	</head>
 	<body class="w3-light-gray">
 		<div class="post w3-panel">
-			<div class="w3-panel post-header w3-light-blue">
+			<h2><?php echo $post_data["title"];?></h2>
+			<div class="w3-panel post-header w3-dark-gray">
 				<div class="w3-third">	
-					<span class="w3-text-black"><?php echo $user_info["Username"]; ?> </span>
-					<span class="w3-text-gray">Asker</span>
+					<span><?php echo $user_info["Username"]; ?> </span>
+					<span class="w3-text-cyan">Asker</span>
 				</div>
 				<div class="w3-third">
 					<span><?php echo $post_data["datetimePosted"];?></span>
@@ -46,8 +51,8 @@
 				</div>
 				<div class="w3-right utilities w3-panel">
 					
-					 <a class="w3-light-blue w3-button" href="post.php?id=<?php echo $id; ?>&sort=VOTES">Sort by Votes</a>
-					<a class="w3-light-blue w3-button" href="a2a.php?id=<?php echo $id; ?>">Request for Answer</a>
+					 <a class="w3-dark-gray w3-button" href="post.php?id=<?php echo $id; ?>&sort=VOTES">Sort by Votes</a>
+					<a class="w3-dark-gray w3-button" href="a2a.php?id=<?php echo $id; ?>">Request for Answer</a>
 				</div>
 			</div>
 		</div>
@@ -75,7 +80,7 @@
 			}
 				
 			?>
-			<textarea name="newResponse" class="w3-input w3-border <?php echo $newResponseClass; ?>" rows="5" cols="1" placeholder="New Post"></textarea>
+			<textarea name="newResponse" class="w3-input w3-border <?php echo $newResponseClass; ?>" rows="5" cols="1" placeholder="New Answer"></textarea>
 			<input class="w3-input w3-button w3-right w3-cyan" type="submit" text="Post" name="post" />
 		</form>
 		<?php include 'footer.php'; ?>

@@ -7,7 +7,7 @@
 		} else header("Location: login.php");
 		
 		?>
-
+		<title>My Posts</title>
 	</head>
 	<body>	
 	

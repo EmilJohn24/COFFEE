@@ -5,7 +5,7 @@
 	color: red;
 	}
 </style>
-<title>COFFEE - Login Page</title>
+<title>COFFEE - Login</title>
 <?php
 	include 'header.php';
 	include 'user_functions.php';

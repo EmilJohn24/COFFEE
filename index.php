@@ -1,7 +1,7 @@
 <html>
 	<head>
 		<?php include 'header.php'; ?>
-
+		<title>Home</title>
 	</head>
 	<body>	
 	
@@ -9,6 +9,7 @@
 			<div id="categories" class="categories w3-panel w3-cell">
 				<div>
 					<h2>Categories</h2>
+					<hr>
 					<a class="w3-right w3-button w3-hover-blue w3-green" href="add_category.php">+ New Category</a>
 				</div>
 				<table id="categories" class="w3-forum_table w3-table w3-bordered w3-hoverable">

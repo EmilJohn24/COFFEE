@@ -3,6 +3,7 @@
 	<?php
 		include 'header.php';
 	?>
+	<title>Unanswered Posts</title>
 	</head>
 	
 	

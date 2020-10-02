@@ -9,10 +9,12 @@
 			$topic_info = mysqli_fetch_assoc($topic_query);
 		?>
 		
-		<title><?php echo $category_info["name"]; ?></title>
+		<title><?php echo $topic_info["name"]; ?></title>
 	</head>
 	<body>
 		<div id="posts" class="posts w3-panel">
+				<h2><?php echo $topic_info["name"]; ?></h2>
+
 			<a class="w3-button w3-green w3-hover-brown" href="./new_post.php?id=<?php echo $id;?>">+ New Post</a>
 			<table id="posts" class="forum_table w3-table w3-bordered">
 			    <colgroup>
